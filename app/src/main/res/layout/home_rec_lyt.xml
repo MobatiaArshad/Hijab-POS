@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.a71cities.hijab.ppm.ui.home.model.HomeData" />
+
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="14dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    android:id="@+id/productCodeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textSize="20sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@{model.code}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="#A23B0G" />
+
+                <TextView
+                    android:id="@+id/productTypeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semibold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/productCodeTxt"
+                    android:layout_marginTop="10dp"
+                    android:text="@{model.type}"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="Abhaya" />
+
+                <TextView
+                    android:id="@+id/salePriceTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textSize="18sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    setPrice="@{model.price}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/returnIco"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="₹3300" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/paymentTypeIco"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    paymentType="@{model.paymentType}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/phonepe_ico" />
+
+
+                <ImageView
+                    android:id="@+id/returnIco"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="@{model.returned ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@+id/paymentTypeIco"
+                    app:layout_constraintEnd_toStartOf="@+id/paymentTypeIco"
+                    app:layout_constraintStart_toStartOf="@+id/paymentTypeIco"
+                    app:layout_constraintTop_toTopOf="@+id/paymentTypeIco"
+                    app:srcCompat="@drawable/produc_return_ico" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

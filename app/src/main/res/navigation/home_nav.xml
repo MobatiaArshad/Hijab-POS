@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.a71cities.hijab.ppm.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_createBillFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"
+            app:popExitAnim="@anim/slide_in_down"
+            app:popEnterAnim="@anim/slide_out_down"
+            app:destination="@id/createBillFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createBillFragment"
+        android:name="com.a71cities.hijab.ppm.ui.createBill.CreateBillFragment"
+        android:label="CreateBillFragment"
+        tools:layout="@layout/fragment_create_bill"/>
+    <dialog
+        android:id="@+id/paymentTypeBottomSheet"
+        android:name="com.a71cities.hijab.ppm.ui.paymentType.PaymentTypeBottomSheet"
+        android:label="fragment_payment_type_bottom_sheet"
+        tools:layout="@layout/fragment_payment_type_bottom_sheet" />
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.a71cities.hijab.ppm.ui.products.ProductsFragment"
+        android:label="ProductsFragment"
+        tools:layout="@layout/fragment_products">
+        <action
+            android:id="@+id/action_productsFragment_to_addProductFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"
+            app:popExitAnim="@anim/slide_in_down"
+            app:popEnterAnim="@anim/slide_out_down"
+            app:destination="@id/addProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.a71cities.hijab.ppm.ui.addProduct.AddProductFragment"
+        android:label="AddProductFragment"
+        tools:layout="@layout/fragment_add_product"/>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.a71cities.hijab.ppm.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_addProductTypeFragment"
+            app:destination="@id/addProductTypeFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"
+            app:popExitAnim="@anim/slide_in_down"
+            app:popEnterAnim="@anim/slide_out_down"/>
+    </fragment>
+    <fragment
+        android:id="@+id/salesReportFragment"
+        android:name="com.a71cities.hijab.ppm.ui.reports.SalesReportFragment"
+        android:label="fragment_sales_report"
+        tools:layout="@layout/fragment_sales_report" />
+    <fragment
+        android:id="@+id/addProductTypeFragment"
+        android:name="com.a71cities.hijab.ppm.ui.addProductType.AddProductTypeFragment"
+        android:label="AddProductTypeFragment"
+        tools:layout="@layout/fragment_add_product_type"/>
+</navigation>
+
+    <!--NORMAL ANIMATION-->
+
+    <!--    app:enterAnim="@anim/slide_in_up"   -->
+    <!--    app:exitAnim="@anim/slide_out_down" -->
+    <!--    app:popExitAnim="@anim/slide_in_down"   -->
+    <!--    app:popEnterAnim="@anim/slide_out_down" -->
+
+
+    <!--ONLY FOR STEPS (BACK)-->
+
+    <!--    app:enterAnim="@anim/slide_out_down"    -->
+    <!--    app:exitAnim="@anim/slide_in_down"  -->
+    <!--    app:popExitAnim="@anim/slide_out_down"  -->
+    <!--    app:popEnterAnim="@anim/slide_in_up"    -->
