@@ -3,10 +3,11 @@ package com.a71cities.hijab.ppm.ui.home.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.a71cities.hijab.ppm.database.model.SaleEntity
 import com.a71cities.hijab.ppm.databinding.HomeRecLytBinding
 import com.a71cities.hijab.ppm.ui.home.model.HomeData
 
-class HomeAdapter(val array: ArrayList<HomeData>) :RecyclerView.Adapter<HomeAdapter.VH>() {
+class HomeAdapter(val array: List<SaleEntity>) :RecyclerView.Adapter<HomeAdapter.VH>() {
 
     inner class VH(val binding: HomeRecLytBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -18,5 +19,16 @@ class HomeAdapter(val array: ArrayList<HomeData>) :RecyclerView.Adapter<HomeAdap
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.binding.model = array[position]
         holder.binding.executePendingBindings()
+
+        holder.itemView.apply {
+            holder.binding.apply {
+                array[position].let {
+                    productCodeTxt.text = "#ABA${it.id}"
+                    productItemsTxt.text = it.soldItems?.joinToString { m -> m.productName }
+                    salePriceTxt.text = "₹${it.paidAmount}"
+                }
+            }
+        }
+
     }
 }

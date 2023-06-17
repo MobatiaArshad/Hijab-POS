@@ -1,4 +1,4 @@
-package com.a71cities.hijab.ppm.utils
+package com.a71cities.hijab.ppm.database.listConverters
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

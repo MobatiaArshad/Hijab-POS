@@ -10,14 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.a71cities.hijab.ppm.R
 import com.a71cities.hijab.ppm.database.model.ProductsEntity
+import com.a71cities.hijab.ppm.database.model.SaleEntity
 import com.a71cities.hijab.ppm.databinding.FragmentCreateBillBinding
+import com.a71cities.hijab.ppm.extras.Constants.CART_DATA
+import com.a71cities.hijab.ppm.extras.Constants.PAYMENT_COMPLETED
 import com.a71cities.hijab.ppm.ui.createBill.adapter.CreateBillAdapter
 import com.a71cities.hijab.ppm.extras.clippingBottomRec
+import com.a71cities.hijab.ppm.extras.goBack
 import com.a71cities.hijab.ppm.extras.log
 import com.a71cities.hijab.ppm.extras.searchQueryTyped
 import com.a71cities.hijab.ppm.extras.toJson
@@ -34,7 +39,9 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
 
     private lateinit var viewModel: CreateBillViewModel
     private lateinit var binding: FragmentCreateBillBinding
+
     var cartArray = arrayListOf<ProductsEntity>()
+    lateinit var saleData: SaleEntity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +55,7 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CreateBillViewModel::class.java]
 
+        saleData = SaleEntity()
         setUI()
         observer()
 
@@ -80,6 +88,10 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
 
                 binding.searchEdt.text.clear()
             }
+        }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(PAYMENT_COMPLETED)?.observe(viewLifecycleOwner) {
+            if (it) findNavController().navigate(R.id.homeFragment)
         }
     }
 
@@ -116,12 +128,17 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setTotalAmount(input: Int) {
+        saleData.subTotal = input
         binding.subTotalTxt.text = "SubTotal: ₹$input/-"
     }
 
     override fun onClick(p0: View?) {
         when(p0?.id) {
-            binding.confirmBtn.id -> findNavController().navigate(R.id.paymentTypeBottomSheet)
+            binding.confirmBtn.id -> {
+                saleData.soldItems = cartArray
+
+                findNavController().navigate(R.id.paymentTypeBottomSheet, bundleOf(CART_DATA to saleData))
+            }
         }
     }
 }

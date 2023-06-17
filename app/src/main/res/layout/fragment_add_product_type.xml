@@ -22,7 +22,7 @@
             android:fontFamily="@font/inter"
             android:hint="@string/enter_product_type"
             android:imeOptions="actionNext"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="12"
             android:maxLines="1"
             android:padding="15dp"

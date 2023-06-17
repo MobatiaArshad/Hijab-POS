@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.a71cities.hijab.ppm.ui.home.model.HomeData" />
+            type="com.a71cities.hijab.ppm.database.model.SaleEntity" />
 
         <import type="android.view.View"/>
     </data>
@@ -40,20 +40,18 @@
                     android:textSize="20sp"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:text="@{model.code}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="#A23B0G" />
 
                 <TextView
-                    android:id="@+id/productTypeTxt"
+                    android:id="@+id/productItemsTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/productCodeTxt"
                     android:layout_marginTop="10dp"
-                    android:text="@{model.type}"
                     android:maxLines="2"
                     android:ellipsize="end"
                     tools:text="Abhaya" />
@@ -67,7 +65,6 @@
                     android:textSize="18sp"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    setPrice="@{model.price}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/returnIco"
                     app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +84,7 @@
                     android:id="@+id/returnIco"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:visibility="@{model.returned ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/paymentTypeIco"
                     app:layout_constraintEnd_toStartOf="@+id/paymentTypeIco"
                     app:layout_constraintStart_toStartOf="@+id/paymentTypeIco"

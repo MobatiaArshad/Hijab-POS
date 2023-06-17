@@ -11,7 +11,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.graphics.pdf.PdfRenderer
 import android.location.Location
 import android.location.LocationManager
@@ -43,7 +42,6 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.RequiresApi
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.toSpannable
@@ -63,7 +61,6 @@ import com.a71cities.hijab.ppm.databinding.ImageChooserAlertLytBinding
 import com.a71cities.hijab.ppm.databinding.SingleBtnAlertBinding
 import com.a71cities.hijab.ppm.extras.Constants.LOG
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -76,7 +73,6 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.a71cities.hijab.ppm.utils.Loader
 import com.a71cities.hijab.ppm.utils.Pref
 import com.fondesa.kpermissions.PermissionStatus
 import com.fondesa.kpermissions.request.PermissionRequest
@@ -1741,7 +1737,7 @@ fun TextView.textToHashtag() {
 @BindingAdapter("paymentType")
 fun ImageView.paymentType(input: Int) {
     when(input) {
-        0 -> setImageResource(R.drawable.cashpay_ico)
+        3 -> setImageResource(R.drawable.cashpay_ico)
         1 -> setImageResource(R.drawable.gpay_ico)
         2 -> setImageResource(R.drawable.phonepe_ico)
     }
@@ -3183,4 +3179,22 @@ fun View.setMargin(left: Int? = null, top: Int? = null, right: Int? = null, bott
         right ?: params.rightMargin,
         bottom ?: params.bottomMargin)
     layoutParams = params
+}
+
+fun getCurrentDateTime(): String {
+    return try {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault())
+        dateFormat.format(Date())
+    } catch (e: Exception) {
+        "Error generating date"
+    }
+}
+
+fun getTodayDate(): String {
+    return try {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        dateFormat.format(Date())
+    } catch (e: Exception) {
+        "Error generating date"
+    }
 }

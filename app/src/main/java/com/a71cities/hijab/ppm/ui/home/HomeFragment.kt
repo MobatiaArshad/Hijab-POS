@@ -37,11 +37,17 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
-        binding.recyclerView.adapter = HomeAdapter(viewModel.getHomeData())
-        binding.recyclerView.clippingBottomRec(80)
+        observers()
 
         binding.newBillBtn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_createBillFragment)
+        }
+    }
+
+    private fun observers() {
+        viewModel.saleResponse.observe(viewLifecycleOwner) {
+            binding.recyclerView.adapter = HomeAdapter(it)
+            binding.recyclerView.clippingBottomRec(80)
         }
     }
 

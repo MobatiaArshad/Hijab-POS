@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import com.a71cities.hijab.ppm.database.HijabDao
 import com.a71cities.hijab.ppm.database.model.ProductTypeEntity
 import com.a71cities.hijab.ppm.database.model.ProductsEntity
+import com.a71cities.hijab.ppm.database.model.SaleEntity
 import javax.inject.Inject
 
 class HijabRoomRepository @Inject constructor(
@@ -32,5 +33,13 @@ class HijabRoomRepository @Inject constructor(
 
     @WorkerThread
     suspend fun getProductByCode(code: String): List<ProductsEntity> = dao.getProductByCode(code)
+
+    @WorkerThread
+    suspend fun newBill(saleEntity: SaleEntity) {
+        dao.newBill(saleEntity)
+    }
+
+    @WorkerThread
+    suspend fun getSaleToday(today: String): List<SaleEntity> = dao.getSalesToday(today)
 
 }

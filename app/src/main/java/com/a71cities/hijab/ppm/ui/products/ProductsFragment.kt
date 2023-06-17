@@ -45,12 +45,14 @@ class ProductsFragment : Fragment(), View.OnClickListener {
 
     private fun observers() {
         viewModel.types.observe(viewLifecycleOwner) {
-            proTypeId = it[0].id
-            binding.categoryRec.apply {
-                clippingRec(it.size)
-                adapter = ProductCategoryAdapter(it) { entity ->
-                    proTypeId = entity.id
-                    viewModel.getProductsByType(proTypeId!!)
+            if (it.isNotEmpty()) {
+                proTypeId = it[0].id
+                binding.categoryRec.apply {
+                    clippingRec(it.size)
+                    adapter = ProductCategoryAdapter(it) { entity ->
+                        proTypeId = entity.id
+                        viewModel.getProductsByType(proTypeId!!)
+                    }
                 }
             }
         }
