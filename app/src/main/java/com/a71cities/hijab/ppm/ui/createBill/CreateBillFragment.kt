@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.a71cities.hijab.ppm.R
+import com.a71cities.hijab.ppm.base.BaseFragment
 import com.a71cities.hijab.ppm.database.model.ProductsEntity
 import com.a71cities.hijab.ppm.database.model.SaleEntity
 import com.a71cities.hijab.ppm.databinding.FragmentCreateBillBinding
@@ -27,21 +28,22 @@ import com.a71cities.hijab.ppm.extras.log
 import com.a71cities.hijab.ppm.extras.searchQueryTyped
 import com.a71cities.hijab.ppm.extras.toJson
 import com.a71cities.hijab.ppm.ui.createBill.adapter.ProductCodeSpinnerAdapter
+import com.a71cities.hijab.ppm.ui.products.model.ProductsResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
-class CreateBillFragment : Fragment(), View.OnClickListener {
+class CreateBillFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
         fun newInstance() = CreateBillFragment()
     }
 
-    private lateinit var viewModel: CreateBillViewModel
+    override lateinit var viewModel: CreateBillViewModel
     private lateinit var binding: FragmentCreateBillBinding
 
-    var cartArray = arrayListOf<ProductsEntity>()
-    lateinit var saleData: SaleEntity
+    var cartArray = arrayListOf<ProductsResponse.Data>()
+//    lateinit var saleData: SaleEntity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +57,7 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CreateBillViewModel::class.java]
 
-        saleData = SaleEntity()
+//        saleData = SaleEntity()
         setUI()
         observer()
 
@@ -80,11 +82,11 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
             binding.searchEdt.showDropDown()
 
             binding.searchEdt.setOnItemClickListener { adapterView, view, position, l ->
-                val item = adapterView.getItemAtPosition(position) as ProductsEntity
+                val item = adapterView.getItemAtPosition(position) as ProductsResponse.Data
                 cartArray.add(item)
 
                 binding.recyclerView.adapter?.notifyDataSetChanged()
-                setTotalAmount(cartArray.sumOf { m -> m.salePrice })
+                setTotalAmount(cartArray.sumOf { m -> m.salePrice!!.toInt() })
 
                 binding.searchEdt.text.clear()
             }
@@ -98,7 +100,7 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
     private fun setUI() {
 
 
-        setTotalAmount(cartArray.sumOf { it.salePrice })
+        setTotalAmount(cartArray.sumOf { it.salePrice!!.toInt() })
 
         binding.recyclerView.apply {
             clippingBottomRec(70)
@@ -116,9 +118,9 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
                 val adapter = binding.recyclerView.adapter!!
                 cartArray.removeAt(viewHolder.absoluteAdapterPosition)
                 adapter.notifyItemRemoved(viewHolder.absoluteAdapterPosition)
-                adapter.notifyItemRangeChanged(viewHolder.absoluteAdapterPosition,viewModel.bills.size)
+                adapter.notifyItemRangeChanged(viewHolder.absoluteAdapterPosition,cartArray.size)
 
-                setTotalAmount(cartArray.sumOf { it.salePrice })
+                setTotalAmount(cartArray.sumOf { it.salePrice!!.toInt() })
             }
 
         })
@@ -128,16 +130,16 @@ class CreateBillFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setTotalAmount(input: Int) {
-        saleData.subTotal = input
+//        saleData.subTotal = input
         binding.subTotalTxt.text = "SubTotal: ₹$input/-"
     }
 
     override fun onClick(p0: View?) {
         when(p0?.id) {
             binding.confirmBtn.id -> {
-                saleData.soldItems = cartArray
+//                saleData.soldItems = cartArray
 
-                findNavController().navigate(R.id.paymentTypeBottomSheet, bundleOf(CART_DATA to saleData))
+//                findNavController().navigate(R.id.paymentTypeBottomSheet, bundleOf(CART_DATA to saleData))
             }
         }
     }

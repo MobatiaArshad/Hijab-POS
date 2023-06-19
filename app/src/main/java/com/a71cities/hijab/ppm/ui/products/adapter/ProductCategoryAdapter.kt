@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.a71cities.hijab.ppm.R
 import com.a71cities.hijab.ppm.database.model.ProductTypeEntity
 import com.a71cities.hijab.ppm.databinding.ProductCategoryRecLytBinding
+import com.a71cities.hijab.ppm.ui.addProductType.model.ProductTypeResponse
 
 class ProductCategoryAdapter(
-    private val arrayList: List<ProductTypeEntity>,
-    private val click: (ProductTypeEntity) -> Unit
+    private val arrayList: List<ProductTypeResponse.Data>,
+    private val click: (ProductTypeResponse.Data) -> Unit
 ): RecyclerView.Adapter<ProductCategoryAdapter.VH>() {
 
     var selection = 0

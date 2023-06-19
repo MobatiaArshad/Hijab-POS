@@ -8,8 +8,10 @@ import com.a71cities.hijab.ppm.R
 import com.a71cities.hijab.ppm.extras.gravityTop
 import com.a71cities.hijab.ppm.utils.Loader
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
+@AndroidEntryPoint
 abstract class BaseFragment: Fragment() {
     abstract val viewModel: BaseViewModel
 

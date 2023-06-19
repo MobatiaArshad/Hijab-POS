@@ -3,10 +3,10 @@ package com.a71cities.hijab.ppm.ui.addProductType.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.a71cities.hijab.ppm.database.model.ProductTypeEntity
 import com.a71cities.hijab.ppm.databinding.ProductTypeRecLytBinding
+import com.a71cities.hijab.ppm.ui.addProductType.model.ProductTypeResponse
 
-class ProductTypeAdapter(val array: List<ProductTypeEntity>): RecyclerView.Adapter<ProductTypeAdapter.VH>() {
+class ProductTypeAdapter(val array: List<ProductTypeResponse.Data>): RecyclerView.Adapter<ProductTypeAdapter.VH>() {
 
     inner class VH(val binding: ProductTypeRecLytBinding): RecyclerView.ViewHolder(binding.root)
 

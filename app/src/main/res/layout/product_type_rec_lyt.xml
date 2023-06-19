@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.a71cities.hijab.ppm.database.model.ProductTypeEntity" />
+            type="com.a71cities.hijab.ppm.ui.addProductType.model.ProductTypeResponse.Data" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

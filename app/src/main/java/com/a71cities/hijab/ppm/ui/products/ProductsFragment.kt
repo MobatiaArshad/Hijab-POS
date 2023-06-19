@@ -22,7 +22,7 @@ class ProductsFragment : Fragment(), View.OnClickListener {
         fun newInstance() = ProductsFragment()
     }
 
-    private var proTypeId: Int? = 1
+    private var proTypeId: String? = null
     private lateinit var viewModel: ProductsViewModel
     private lateinit var binding: FragmentProductsBinding
 
@@ -44,13 +44,13 @@ class ProductsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun observers() {
-        viewModel.types.observe(viewLifecycleOwner) {
+        viewModel.typesResponse.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                proTypeId = it[0].id
+                proTypeId = it[0].id.toString()
                 binding.categoryRec.apply {
                     clippingRec(it.size)
                     adapter = ProductCategoryAdapter(it) { entity ->
-                        proTypeId = entity.id
+                        proTypeId = entity.id.toString()
                         viewModel.getProductsByType(proTypeId!!)
                     }
                 }
@@ -70,10 +70,5 @@ class ProductsFragment : Fragment(), View.OnClickListener {
         when(p0?.id) {
             binding.addProBtn.id -> findNavController().navigate(R.id.action_productsFragment_to_addProductFragment)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getProductsByType(proTypeId!!)
     }
 }

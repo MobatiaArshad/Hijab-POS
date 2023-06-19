@@ -9,17 +9,18 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.a71cities.hijab.ppm.R
 import com.a71cities.hijab.ppm.database.model.ProductsEntity
+import com.a71cities.hijab.ppm.ui.products.model.ProductsResponse
 
 
-class ProductCodeSpinnerAdapter(context: Context,val list: List<ProductsEntity>) :
-    ArrayAdapter<ProductsEntity>(context, R.layout.product_code_spnr_lyt, list) {
+class ProductCodeSpinnerAdapter(context: Context,val list: List<ProductsResponse.Data>) :
+    ArrayAdapter<ProductsResponse.Data>(context, R.layout.product_code_spnr_lyt, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.product_code_spnr_lyt, parent, false)
 
         val codeTxt = view!!.findViewById<TextView>(R.id.productCodeTxt)
         val nameTxt = view.findViewById<TextView>(R.id.productNameTxt)
-        val currentItem: ProductsEntity? = getItem(position)
+        val currentItem: ProductsResponse.Data? = getItem(position)
 
         codeTxt.text = "#${currentItem?.productCode}"
         nameTxt.text = currentItem?.productName
@@ -31,7 +32,7 @@ class ProductCodeSpinnerAdapter(context: Context,val list: List<ProductsEntity>)
 
         val codeTxt = view!!.findViewById<TextView>(R.id.productCodeTxt)
         val nameTxt = view.findViewById<TextView>(R.id.productNameTxt)
-        val currentItem: ProductsEntity? = getItem(position)
+        val currentItem: ProductsResponse.Data? = getItem(position)
 
         codeTxt.text = "#${currentItem?.productCode}"
         nameTxt.text = currentItem?.productName

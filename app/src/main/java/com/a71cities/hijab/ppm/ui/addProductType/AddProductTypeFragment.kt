@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.a71cities.hijab.ppm.R
 import com.a71cities.hijab.ppm.application.HijabApplication
+import com.a71cities.hijab.ppm.base.BaseFragment
 import com.a71cities.hijab.ppm.database.model.ProductTypeEntity
 import com.a71cities.hijab.ppm.databinding.FragmentAddProductTypeBinding
 import com.a71cities.hijab.ppm.extras.log
@@ -20,13 +21,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class AddProductTypeFragment : Fragment() {
+class AddProductTypeFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = AddProductTypeFragment()
     }
 
-    private lateinit var viewModel: AddProductTypeViewModel
+    override lateinit var viewModel: AddProductTypeViewModel
     private lateinit var binding: FragmentAddProductTypeBinding
 
     override fun onCreateView(
@@ -50,15 +51,18 @@ class AddProductTypeFragment : Fragment() {
     }
 
     private fun observers() {
-        viewModel.types.observe(viewLifecycleOwner) {
+        viewModel.typesResponse.observe(viewLifecycleOwner) {
             binding.recyclerView.adapter = ProductTypeAdapter(it)
         }
     }
 
     private fun addType() {
-        val type = ProductTypeEntity(productType = binding.proTypeEdt.text?.trim().toString())
 
-        viewModel.insertType(type)
+        val rawData = hashMapOf<String,String>().apply {
+            put("productType",binding.proTypeEdt.text?.trim().toString())
+        }
+
+        viewModel.insertType(rawData)
     }
 
 }

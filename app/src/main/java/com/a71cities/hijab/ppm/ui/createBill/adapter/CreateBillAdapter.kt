@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.a71cities.hijab.ppm.database.model.ProductsEntity
 import com.a71cities.hijab.ppm.databinding.BillRecLytBinding
 import com.a71cities.hijab.ppm.extras.loadGlideWithoutBaseUrl
+import com.a71cities.hijab.ppm.ui.products.model.ProductsResponse
 
-class CreateBillAdapter(val arrayList: ArrayList<ProductsEntity>): RecyclerView.Adapter<CreateBillAdapter.VH>() {
+class CreateBillAdapter(val arrayList: ArrayList<ProductsResponse.Data>): RecyclerView.Adapter<CreateBillAdapter.VH>() {
 
     inner class VH(val binding: BillRecLytBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -21,7 +22,7 @@ class CreateBillAdapter(val arrayList: ArrayList<ProductsEntity>): RecyclerView.
         holder.binding.apply {
             holder.itemView.apply {
                 arrayList[position].let {
-                    productCodeTxt.text = it.productCode
+                    productCodeTxt.text = it.productCode.toString()
                     productNameTxt.text = it.productName
                     productTypeTxt.text = it.productTypeName
                     salePriceTxt.text = "₹${it.salePrice}/-"

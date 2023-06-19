@@ -3,11 +3,11 @@ package com.a71cities.hijab.ppm.ui.products.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.a71cities.hijab.ppm.database.model.ProductsEntity
 import com.a71cities.hijab.ppm.databinding.ProductRecLytBinding
 import com.a71cities.hijab.ppm.extras.loadGlideWithoutBaseUrl
+import com.a71cities.hijab.ppm.ui.products.model.ProductsResponse
 
-class ProductAdapter(val list: List<ProductsEntity>): RecyclerView.Adapter<ProductAdapter.VH>() {
+class ProductAdapter(val list: List<ProductsResponse.Data>): RecyclerView.Adapter<ProductAdapter.VH>() {
 
     inner class VH(val binding: ProductRecLytBinding): RecyclerView.ViewHolder(binding.root)
 

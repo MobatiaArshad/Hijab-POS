@@ -1,41 +1,59 @@
 package com.a71cities.hijab.ppm.ui.products
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a71cities.hijab.ppm.api.repositories.HijabApiRepository
+import com.a71cities.hijab.ppm.base.BaseViewModel
 import com.a71cities.hijab.ppm.database.repository.HijabRoomRepository
-import com.a71cities.hijab.ppm.database.model.ProductTypeEntity
-import com.a71cities.hijab.ppm.database.model.ProductsEntity
+import com.a71cities.hijab.ppm.extras.getErrorResponse
+import com.a71cities.hijab.ppm.ui.addProductType.model.ProductTypeResponse
+import com.a71cities.hijab.ppm.ui.products.model.ProductsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val repository: HijabRoomRepository,
-) : ViewModel() {
+    private val apiRepository: HijabApiRepository
+) : BaseViewModel() {
 
 
-    val types = MutableLiveData<List<ProductTypeEntity>>()
-    val productsData = MutableLiveData<List<ProductsEntity>>()
+    val productsData = MutableLiveData<List<ProductsResponse.Data>>()
+    val typesResponse = MutableLiveData<List<ProductTypeResponse.Data>>()
 
     init {
         getTypes()
     }
 
-    fun getProductsByType(id: Int) {
-        viewModelScope.launch {
-            productsData.value = repository.getProductsByType(id)
-        }
-    }
-
     private fun getTypes() {
         viewModelScope.launch {
-            types.value = repository.getTypes()
+            try {
+                showSkeleton.value = true
+                typesResponse.value = apiRepository.getProductType().data!!
+                getProductsByType(typesResponse.value!![0].id.toString())
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                showSkeleton.value = false
+                showAlertTxt.value = e.getErrorResponse()
+            }
+
         }
     }
 
-
+    fun getProductsByType(proTypeId: String) {
+        viewModelScope.launch { 
+            try {
+                productsData.value = apiRepository.getProductByTypeId(proTypeId).data!!
+                showSkeleton.value = false
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                showSkeleton.value = false
+                showAlertTxt.value = e.getErrorResponse()
+            }
+        }
+    }
 
 
 }

@@ -7,8 +7,12 @@ import com.a71cities.hijab.ppm.database.repository.HijabRoomRepository
 import com.a71cities.hijab.ppm.database.model.ProductTypeEntity
 import com.a71cities.hijab.ppm.database.model.ProductsEntity
 import com.a71cities.hijab.ppm.api.repositories.HijabApiRepository
+import com.a71cities.hijab.ppm.extras.SingleLiveEvent
+import com.a71cities.hijab.ppm.extras.getErrorResponse
+import com.a71cities.hijab.ppm.ui.addProductType.model.ProductTypeResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +22,8 @@ class AddProductViewModel @Inject constructor(
 ) : BaseViewModel() {
 
 
-    val types = MutableLiveData<List<ProductTypeEntity>>()
+    val typesResponse = MutableLiveData<List<ProductTypeResponse.Data>>()
+    val dataSubmitted = SingleLiveEvent<Boolean>()
     val imgToUpload = MutableLiveData<String>()
 
     init {
@@ -27,15 +32,26 @@ class AddProductViewModel @Inject constructor(
 
     private fun getTypes() {
         viewModelScope.launch {
-            types.value = repository.getTypes()
+            try {
+                loader.value = true
+                typesResponse.value = apiRepository.getProductType().data!!
+                loader.value = false
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                loader.value = false
+                showAlertTxt.value = e.getErrorResponse()
+            }
+
         }
     }
 
-    fun uploadImg() {
-
-    }
-
-    fun addProduct(products: ProductsEntity) = viewModelScope.launch {
-        repository.addProduct(products)
+    fun addProduct(rawData: HashMap<String,String>) = viewModelScope.launch {
+        try {
+            dataSubmitted.value = apiRepository.addProduct(rawData).status!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            loader.value = false
+            showAlertTxt.value = e.getErrorResponse()
+        }
     }
 }

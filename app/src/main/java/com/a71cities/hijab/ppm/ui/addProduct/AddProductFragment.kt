@@ -49,7 +49,7 @@ class AddProductFragment : BaseFragment(), View.OnClickListener, PermissionReque
         fun newInstance() = AddProductFragment()
     }
 
-    private var prodTypeId: Int? = null
+    private var prodTypeId: String? = null
     private var prodTypeName: String? = null
     override lateinit var viewModel: AddProductViewModel
     private lateinit var binding: FragmentAddProductBinding
@@ -110,19 +110,23 @@ class AddProductFragment : BaseFragment(), View.OnClickListener, PermissionReque
     }
 
     private fun observers() {
-        viewModel.types.observe(viewLifecycleOwner) { list ->
+        viewModel.typesResponse.observe(viewLifecycleOwner) { list ->
 
-            prodTypeId = list[0].id
+            prodTypeId = list[0].id.toString()
             prodTypeName = list[0].productType
 
             binding.categoryRec.apply {
                 clippingRec(list.size)
                 adapter = ProductCategoryAdapter(list) {
-                    prodTypeId = it.id
+                    prodTypeId = it.id.toString()
                     prodTypeName = it.productType
 
                 }
             }
+        }
+
+        viewModel.dataSubmitted.observe(viewLifecycleOwner) {
+            if (it!!) goBack()
         }
 
     }
@@ -136,28 +140,48 @@ class AddProductFragment : BaseFragment(), View.OnClickListener, PermissionReque
         }
     }
 
+    private fun isValidForm(): Boolean {
+        when {
+            binding.proCodeEdt.text.isNullOrEmpty() -> {
+                viewModel.showAlertRes.value = R.string.please_enter_product_code
+            }
+            binding.proNameEdt.text.isNullOrEmpty() -> {
+                viewModel.showAlertRes.value = R.string.please_enter_product_name
+            }
+            binding.proSizeEdt.text.isNullOrEmpty() -> {
+                viewModel.showAlertRes.value = R.string.please_enter_product_size
+            }
+            binding.proPriceEdt.text.isNullOrEmpty() -> {
+                viewModel.showAlertRes.value = R.string.please_enter_product_price
+            }
+            binding.proSalePriceEdt.text.isNullOrEmpty() -> {
+                viewModel.showAlertRes.value = R.string.please_enter_sale_price
+            }
+            else -> return true
+        }
+        return false
+    }
+
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.closeBtn.id -> goBack()
             binding.chooseImage.id -> request.send()
             binding.submitBtn.id -> {
 
-                val products = ProductsEntity(
-                    productName = binding.proNameEdt.text?.trim().toString(),
-                    productCode = binding.proCodeEdt.text?.trim().toString(),
-                    productTypeName = prodTypeName!!,
-                    productTypeId = prodTypeId!!,
-                    size = binding.proSizeEdt.text?.trim().toString(),
-                    price = binding.proPriceEdt.text?.trim().toString().toInt(),
-                    salePrice = binding.proSalePriceEdt.text?.trim().toString().toInt()
-                )
+                if (isValidForm()) {
+                    val rawData = hashMapOf(
+                        "productCode" to binding.proCodeEdt.text?.trim().toString(),
+                        "productName" to binding.proNameEdt.text?.trim().toString(),
+                        "productTypeId" to prodTypeId.toString(),
+                        "productTypeName" to prodTypeName.toString(),
+                        "size" to binding.proSizeEdt.text?.trim().toString(),
+                        "price" to binding.proPriceEdt.text?.trim().toString(),
+                        "salePrice" to binding.proSalePriceEdt.text?.trim().toString()
+                    )
 
-                viewModel.addProduct(products)
-
-                lifecycleScope.launch {
-                    delay(1000)
-                    goBack()
+                    viewModel.addProduct(rawData)
                 }
+
             }
         }
     }
