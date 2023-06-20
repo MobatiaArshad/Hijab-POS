@@ -1,8 +1,11 @@
 package com.a71cities.hijab.ppm.ui.products.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ProductsResponse(
     @SerializedName("data")
     var `data`: List<Data>? = null,
@@ -10,7 +13,9 @@ data class ProductsResponse(
     var message: String? = null,
     @SerializedName("status")
     var status: Boolean? = null
-) {
+): Parcelable {
+
+    @Parcelize
     data class Data(
         @SerializedName("id")
         var id: Int? = null,
@@ -30,5 +35,5 @@ data class ProductsResponse(
         var salePrice: String? = null,
         @SerializedName("size")
         var size: String? = null
-    )
+    ): Parcelable
 }

@@ -2,6 +2,7 @@ package com.a71cities.hijab.ppm.api
 
 import com.a71cities.hijab.ppm.api.model.CommonResponse
 import com.a71cities.hijab.ppm.ui.addProductType.model.ProductTypeResponse
+import com.a71cities.hijab.ppm.ui.createBill.model.CartDataClass
 import com.a71cities.hijab.ppm.ui.products.model.ProductsResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,4 +33,9 @@ interface HijabApis {
     suspend fun searchProductCode(
         @Query("productCode") id: String
     ): ProductsResponse
+
+    @POST("addSales")
+    suspend fun addSales(
+        @Body cartData: CartDataClass
+    ): CommonResponse
 }

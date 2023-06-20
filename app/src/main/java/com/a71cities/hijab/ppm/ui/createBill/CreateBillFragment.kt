@@ -1,36 +1,26 @@
 package com.a71cities.hijab.ppm.ui.createBill
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.a71cities.hijab.ppm.R
 import com.a71cities.hijab.ppm.base.BaseFragment
-import com.a71cities.hijab.ppm.database.model.ProductsEntity
-import com.a71cities.hijab.ppm.database.model.SaleEntity
 import com.a71cities.hijab.ppm.databinding.FragmentCreateBillBinding
 import com.a71cities.hijab.ppm.extras.Constants.CART_DATA
 import com.a71cities.hijab.ppm.extras.Constants.PAYMENT_COMPLETED
-import com.a71cities.hijab.ppm.ui.createBill.adapter.CreateBillAdapter
 import com.a71cities.hijab.ppm.extras.clippingBottomRec
-import com.a71cities.hijab.ppm.extras.goBack
-import com.a71cities.hijab.ppm.extras.log
 import com.a71cities.hijab.ppm.extras.searchQueryTyped
-import com.a71cities.hijab.ppm.extras.toJson
+import com.a71cities.hijab.ppm.ui.createBill.adapter.CreateBillAdapter
 import com.a71cities.hijab.ppm.ui.createBill.adapter.ProductCodeSpinnerAdapter
+import com.a71cities.hijab.ppm.ui.createBill.model.CartDataClass
 import com.a71cities.hijab.ppm.ui.products.model.ProductsResponse
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class CreateBillFragment : BaseFragment(), View.OnClickListener {
@@ -43,7 +33,7 @@ class CreateBillFragment : BaseFragment(), View.OnClickListener {
     private lateinit var binding: FragmentCreateBillBinding
 
     var cartArray = arrayListOf<ProductsResponse.Data>()
-//    lateinit var saleData: SaleEntity
+    lateinit var saleData: CartDataClass
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +47,7 @@ class CreateBillFragment : BaseFragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CreateBillViewModel::class.java]
 
-//        saleData = SaleEntity()
+        saleData = CartDataClass()
         setUI()
         observer()
 
@@ -130,16 +120,16 @@ class CreateBillFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setTotalAmount(input: Int) {
-//        saleData.subTotal = input
+        saleData.subTotal = input
         binding.subTotalTxt.text = "SubTotal: ₹$input/-"
     }
 
     override fun onClick(p0: View?) {
         when(p0?.id) {
             binding.confirmBtn.id -> {
-//                saleData.soldItems = cartArray
+                saleData.soldItems = cartArray.map { m -> m.id.toString() }
 
-//                findNavController().navigate(R.id.paymentTypeBottomSheet, bundleOf(CART_DATA to saleData))
+                findNavController().navigate(R.id.paymentTypeBottomSheet, bundleOf(CART_DATA to saleData))
             }
         }
     }

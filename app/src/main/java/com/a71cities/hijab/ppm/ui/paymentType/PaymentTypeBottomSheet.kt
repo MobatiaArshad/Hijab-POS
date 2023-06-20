@@ -9,9 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.a71cities.hijab.ppm.databinding.FragmentPaymentTypeBottomSheetBinding
 import com.a71cities.hijab.ppm.extras.Constants.PAYMENT_COMPLETED
 import com.a71cities.hijab.ppm.extras.getCurrentDateTime
-import com.a71cities.hijab.ppm.extras.log
 import com.a71cities.hijab.ppm.extras.openSingleButtonAlert
-import com.a71cities.hijab.ppm.extras.toJson
 import com.a71cities.hijab.ppm.utils.SingleViewSelection
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +37,8 @@ class PaymentTypeBottomSheet : BottomSheetDialogFragment(), View.OnClickListener
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[PaymentTypeBottomSheetViewModel::class.java]
 
+        observers()
+
         val paymentViews = arrayListOf(binding.gPayBtn, binding.phonePeBtn, binding.cashPayBtn)
         singleSelection = SingleViewSelection(paymentViews)
         singleSelection.setSelection(0)
@@ -59,6 +59,18 @@ class PaymentTypeBottomSheet : BottomSheetDialogFragment(), View.OnClickListener
         binding.confirmBtn.setOnClickListener(this)
     }
 
+    private fun observers() {
+        viewModel.dataSubmitted.observe(viewLifecycleOwner) {
+            if (it!!) {
+                findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                    PAYMENT_COMPLETED,
+                    true
+                )
+                dismiss()
+            }
+        }
+    }
+
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.include2.closeBtn.id -> dismiss()
@@ -76,11 +88,6 @@ class PaymentTypeBottomSheet : BottomSheetDialogFragment(), View.OnClickListener
 
             viewModel.addNewBill()
 
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                PAYMENT_COMPLETED,
-                true
-            )
-            dismiss()
         }
     }
 
