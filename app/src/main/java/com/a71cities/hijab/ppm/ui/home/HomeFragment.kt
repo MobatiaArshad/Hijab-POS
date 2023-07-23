@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.a71cities.hijab.ppm.R
+import com.a71cities.hijab.ppm.base.BaseFragment
 import com.a71cities.hijab.ppm.database.HijabRoomDatabase
 import com.a71cities.hijab.ppm.databinding.FragmentHomeBinding
 import com.a71cities.hijab.ppm.extras.clippingBottomRec
@@ -16,13 +17,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = HomeFragment()
     }
 
-    private lateinit var viewModel: HomeViewModel
+    override lateinit var viewModel: HomeViewModel
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(

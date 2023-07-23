@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.a71cities.hijab.ppm.database.model.SaleEntity
 import com.a71cities.hijab.ppm.databinding.HomeRecLytBinding
 import com.a71cities.hijab.ppm.ui.home.model.HomeData
+import com.a71cities.hijab.ppm.ui.home.model.HomeDataResponse
 
-class HomeAdapter(val array: List<SaleEntity>) :RecyclerView.Adapter<HomeAdapter.VH>() {
+class HomeAdapter(val array: List<HomeDataResponse.Data>) :RecyclerView.Adapter<HomeAdapter.VH>() {
 
     inner class VH(val binding: HomeRecLytBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -24,7 +25,7 @@ class HomeAdapter(val array: List<SaleEntity>) :RecyclerView.Adapter<HomeAdapter
             holder.binding.apply {
                 array[position].let {
                     productCodeTxt.text = "#ABA${it.id}"
-                    productItemsTxt.text = it.soldItems?.joinToString { m -> m.productName }
+                    productItemsTxt.text = it.soldItems
                     salePriceTxt.text = "₹${it.paidAmount}"
                 }
             }

@@ -24,8 +24,11 @@ import com.a71cities.hijab.ppm.extras.clippingRec
 import com.a71cities.hijab.ppm.extras.createImageFile
 import com.a71cities.hijab.ppm.extras.goBack
 import com.a71cities.hijab.ppm.extras.imageChooserDialog
+import com.a71cities.hijab.ppm.extras.log
 import com.a71cities.hijab.ppm.extras.showPermanentlyDeniedDialog
 import com.a71cities.hijab.ppm.extras.showRationaleDialog
+import com.a71cities.hijab.ppm.extras.toJson
+import com.a71cities.hijab.ppm.ui.addProduct.adapter.AddProductCategoryAdapter
 import com.a71cities.hijab.ppm.ui.products.adapter.ProductCategoryAdapter
 import com.bumptech.glide.Glide
 import com.esafirm.imagepicker.features.ImagePickerConfig
@@ -54,6 +57,9 @@ class AddProductFragment : BaseFragment(), View.OnClickListener, PermissionReque
     override lateinit var viewModel: AddProductViewModel
     private lateinit var binding: FragmentAddProductBinding
     var file: File? = null
+
+    private var passedSelectedId: Int? = 0
+    private var passedProductId: Int? = null
 
     private val request by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -112,17 +118,37 @@ class AddProductFragment : BaseFragment(), View.OnClickListener, PermissionReque
     private fun observers() {
         viewModel.typesResponse.observe(viewLifecycleOwner) { list ->
 
-            prodTypeId = list[0].id.toString()
-            prodTypeName = list[0].productType
+            if (viewModel.passedEditData.value == null) {
+                prodTypeId = list[0].id.toString()
+                prodTypeName = list[0].productType
+            }
 
             binding.categoryRec.apply {
                 clippingRec(list.size)
-                adapter = ProductCategoryAdapter(list) {
+                adapter = AddProductCategoryAdapter(list, passedSelectedId!!) {
                     prodTypeId = it.id.toString()
                     prodTypeName = it.productType
 
                 }
             }
+        }
+
+        viewModel.passedEditData.observe(viewLifecycleOwner) {
+            it?.let {
+                passedSelectedId = it.productTypeId?.toInt() ?: 0
+                passedProductId = it.id
+                prodTypeId = it.productTypeId
+                prodTypeName = it.productTypeName
+                binding.proCodeEdt.setText(it.productCode.toString())
+                binding.proNameEdt.setText(it.productName)
+                binding.proSizeEdt.setText(it.size)
+                binding.proQtyEdt.setText(it.quantity)
+                binding.proPriceEdt.setText(it.price)
+                binding.proSalePriceEdt.setText(it.salePrice)
+
+                binding.categoryRec.adapter?.notifyDataSetChanged()
+            }
+
         }
 
         viewModel.dataSubmitted.observe(viewLifecycleOwner) {
@@ -151,6 +177,9 @@ class AddProductFragment : BaseFragment(), View.OnClickListener, PermissionReque
             binding.proSizeEdt.text.isNullOrEmpty() -> {
                 viewModel.showAlertRes.value = R.string.please_enter_product_size
             }
+            binding.proQtyEdt.text.isNullOrEmpty() -> {
+                viewModel.showAlertRes.value = R.string.please_enter_product_quantity
+            }
             binding.proPriceEdt.text.isNullOrEmpty() -> {
                 viewModel.showAlertRes.value = R.string.please_enter_product_price
             }
@@ -175,11 +204,16 @@ class AddProductFragment : BaseFragment(), View.OnClickListener, PermissionReque
                         "productTypeId" to prodTypeId.toString(),
                         "productTypeName" to prodTypeName.toString(),
                         "size" to binding.proSizeEdt.text?.trim().toString(),
+                        "quantity" to binding.proQtyEdt.text?.trim().toString(),
                         "price" to binding.proPriceEdt.text?.trim().toString(),
                         "salePrice" to binding.proSalePriceEdt.text?.trim().toString()
                     )
 
-                    viewModel.addProduct(rawData)
+                    if (viewModel.passedEditData.value == null) {
+                        viewModel.addProduct(rawData)
+                    } else  {
+                        viewModel.update(rawData,passedProductId!!)
+                    }
                 }
 
             }

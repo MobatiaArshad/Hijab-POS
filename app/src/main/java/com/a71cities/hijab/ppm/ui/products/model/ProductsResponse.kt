@@ -34,6 +34,8 @@ data class ProductsResponse(
         @SerializedName("salePrice")
         var salePrice: String? = null,
         @SerializedName("size")
-        var size: String? = null
+        var size: String? = null,
+        @SerializedName("quantity")
+        var quantity: String? = null
     ): Parcelable
 }

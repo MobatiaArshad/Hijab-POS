@@ -37,7 +37,9 @@
     <string name="enter_code">Enter code…</string>
     <string name="please_enter_product_name">Please enter Product Name</string>
     <string name="please_enter_product_size">Please enter Product Size</string>
+    <string name="please_enter_product_quantity">Please enter Available Quantity</string>
     <string name="please_enter_product_price">Please enter Product Price</string>
     <string name="please_enter_sale_price">Please enter Sale Price</string>
     <string name="please_enter_product_code">Please enter Product Code</string>
+    <string name="quantity">Quantity</string>
 </resources>

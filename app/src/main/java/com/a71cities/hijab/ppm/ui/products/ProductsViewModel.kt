@@ -27,7 +27,7 @@ class ProductsViewModel @Inject constructor(
         getTypes()
     }
 
-    private fun getTypes() {
+    fun getTypes() {
         viewModelScope.launch {
             try {
                 showSkeleton.value = true

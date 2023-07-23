@@ -4,6 +4,7 @@ import com.a71cities.hijab.ppm.api.HijabApis
 import com.a71cities.hijab.ppm.api.model.CommonResponse
 import com.a71cities.hijab.ppm.ui.addProductType.model.ProductTypeResponse
 import com.a71cities.hijab.ppm.ui.createBill.model.CartDataClass
+import com.a71cities.hijab.ppm.ui.home.model.HomeDataResponse
 import com.a71cities.hijab.ppm.ui.products.model.ProductsResponse
 import javax.inject.Inject
 
@@ -24,4 +25,8 @@ class HijabApiRepository @Inject constructor(
     suspend fun searchProductCode(code: String): ProductsResponse = apis.searchProductCode(code)
 
     suspend fun addSales(cartData: CartDataClass): CommonResponse = apis.addSales(cartData)
+
+    suspend fun getSaleToday(date: String): HomeDataResponse = apis.getSaleToday(date)
+
+    suspend fun updateProduct(map: HashMap<String, String>,id: Int): CommonResponse = apis.updateProduct(map,id)
 }

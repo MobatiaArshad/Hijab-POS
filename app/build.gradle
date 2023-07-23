@@ -9,13 +9,13 @@ plugins {
 
 android {
     namespace 'com.a71cities.hijab.ppm'
-    compileSdk 33
+    compileSdk 34
     flavorDimensions "backend"
 
     defaultConfig {
         applicationId "com.a71cities.hijab.ppm"
         minSdk 29
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -29,7 +29,7 @@ android {
 
     productFlavors {
         dev {
-            buildConfigField "String", "BASE_URL", '"http://192.168.1.39:8080/"'
+            buildConfigField "String", "BASE_URL", '"http://192.168.1.36:8080/"'
         }
 
         prod {
@@ -100,9 +100,9 @@ dependencies {
     implementation 'com.github.esafirm:android-image-picker:3.0.0'
 
     // Room Database
-    implementation "androidx.room:room-ktx:2.6.0-alpha01"
-    kapt "androidx.room:room-compiler:2.6.0-alpha01"
-    androidTestImplementation "androidx.room:room-testing:2.6.0-alpha01"
+    implementation "androidx.room:room-ktx:2.6.0-alpha02"
+    kapt "androidx.room:room-compiler:2.6.0-alpha02"
+    androidTestImplementation "androidx.room:room-testing:2.6.0-alpha02"
 
     implementation "com.google.dagger:hilt-android:2.46.1"
     kapt "com.google.dagger:hilt-compiler:2.46.1"

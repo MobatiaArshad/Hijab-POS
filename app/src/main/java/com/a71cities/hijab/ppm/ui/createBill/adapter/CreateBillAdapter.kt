@@ -22,7 +22,7 @@ class CreateBillAdapter(val arrayList: ArrayList<ProductsResponse.Data>): Recycl
         holder.binding.apply {
             holder.itemView.apply {
                 arrayList[position].let {
-                    productCodeTxt.text = it.productCode.toString()
+                    productCodeTxt.text = "#${it.productCode.toString()}"
                     productNameTxt.text = it.productName
                     productTypeTxt.text = it.productTypeName
                     salePriceTxt.text = "₹${it.salePrice}/-"
